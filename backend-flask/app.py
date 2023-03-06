@@ -55,6 +55,7 @@ from aws_xray_sdk.ext.flask.middleware import XRayMiddleware
 provider = TracerProvider()
 processor = BatchSpanProcessor(OTLPSpanExporter())
 provider.add_span_processor(processor)
+
 trace.set_tracer_provider(provider)
 tracer = trace.get_tracer(__name__)
 
@@ -97,6 +98,7 @@ cors = CORS(
   methods="OPTIONS,GET,HEAD,POST"
 )
 
+#CloudWatch Logs-----
 #@app.after_request
 #def after_request(response):
 #    timestamp = strftime('[%Y-%b-%d %H:%M]')
@@ -118,6 +120,7 @@ def data_message_groups():
     return model['data'], 200
 
 @app.route("/api/messages/@<string:handle>", methods=['GET'])
+#@xray_recorder.capture('user_activities')
 def data_messages(handle):
   user_sender_handle = 'andrewbrown'
   user_receiver_handle = request.args.get('user_reciever_handle')
