@@ -8,6 +8,7 @@
 .activity_feed_collection {
   display: flex;
   flex-direction: column;
+  
 }
 
 .activity_feed_heading {
