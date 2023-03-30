@@ -26,12 +26,12 @@ class Db:
     connection_url = os.getenv("CONNECTION_URL")
     self.pool = ConnectionPool(connection_url)
 
-  def print_sql(self, title, sql):
+  def print_sql(self, title, sql, params={}):
     cyan = '\033[96m'
     nocolor = '\033[0m'
     print("\n")
     print(f'{cyan}SQL STATEMENT-[{title}]===={nocolor}')
-    print(sql + "\n")
+    print(sql,params)
 
   def print_params(self, params):
     blue = '\033[94m'
@@ -40,8 +40,16 @@ class Db:
     for key,value in params.items():
       print(key, ":", value)
 
+  def query_value(self,sql,params={}):
+    self.print_sql('value',sql,params)
+    with self.pool.connection() as conn:
+      with conn.cursor() as cur:
+        cur.execute(sql,params)
+        json = cur.fetchone()
+        return json[0]
+
   def query_commit(self, sql, params):
-    self.print_sql('COMMIT with ID',sql)
+    self.print_sql('COMMIT with ID',sql,params)
     pattern = r"\bRETURNING\b"
     is_returning_id = re.search(pattern, sql)
     try:
@@ -59,7 +67,7 @@ class Db:
   
   # when we want to return an array of json object
   def query_array_json(self,sql,params={}):
-    self.print_sql('ARRAY',sql)
+    self.print_sql('ARRAY',sql, params)
     wrapped_sql = self.query_wrap_array(sql)
     with self.pool.connection() as conn:
       with conn.cursor() as cur:
@@ -69,7 +77,7 @@ class Db:
 
   # When we want to return an object of json objects
   def query_object_json(self,sql,params={}):
-    self.print_sql('OBJECT-JSON',sql)
+    self.print_sql('OBJECT-JSON',sql, params)
     wrapped_sql = self.query_wrap_object(sql)
     self.print_params(params)
     with self.pool.connection() as conn:
