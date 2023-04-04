@@ -21,12 +21,12 @@
     "serviceName": "frontend-react-js",
     "taskDefinition": "frontend-react-js",
     "loadBalancers": [
-        {
-            "targetGroupArn": "arn:aws:elasticloadbalancing:ca-central-1:312848040152:targetgroup/cruddur-frontend-react-js/cecc6f70bff89dd9",
-            "containerName": "frontend-react-js",
-            "containerPort": 3000
-        }
-    ],
+      {
+          "targetGroupArn": "arn:aws:elasticloadbalancing:ca-central-1:312848040152:targetgroup/cruddur-frontend-react-js/cecc6f70bff89dd9",
+          "containerName": "frontend-react-js",
+          "containerPort": 3000
+      }
+  ],
     "serviceConnectConfiguration": {
       "enabled": true,
       "namespace": "cruddur",
