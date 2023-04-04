@@ -20,6 +20,13 @@
     "propagateTags": "SERVICE",
     "serviceName": "backend-flask",
     "taskDefinition": "backend-flask",
+    "loadBalancers": [
+      {
+          "targetGroupArn": "arn:aws:elasticloadbalancing:ca-central-1:312848040152:targetgroup/cruddur-backend-flask-tg/4e96855ec6108fa0",
+          "containerName": "backend-flask",
+          "containerPort": 4567
+      }
+  ],
     "serviceConnectConfiguration": {
       "enabled": true,
       "namespace": "cruddur",
