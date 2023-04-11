@@ -179,7 +179,7 @@ def data_messages(message_group_uuid):
 def data_create_message():
   message_group_uuid   = request.json.get('message_group_uuid',None)
   user_receiver_handle = request.json.get('handle',None)
-
+  
   message = request.json['message']
   access_token = extract_access_token(request.headers)
   try:

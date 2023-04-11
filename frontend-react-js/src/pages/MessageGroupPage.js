@@ -25,12 +25,16 @@ export default function MessageGroupPage() {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/message_groups`
       await getAccessToken()
       const access_token = localStorage.getItem("access_token")
+      console.log("BACKEND_URL")
+      console.log(backend_url)
       const res = await fetch(backend_url, {
         headers: {
           Authorization: `Bearer ${access_token}`
         }, 
         method: "GET"
       });
+      console.log("BACKEND_URL")
+      console.log(backend_url)
       let resJson = await res.json();
       if (res.status === 200) {
         setMessageGroups(resJson)
@@ -47,12 +51,16 @@ export default function MessageGroupPage() {
       const backend_url = `${process.env.REACT_APP_BACKEND_URL}/api/messages/${params.message_group_uuid}`
       await getAccessToken()
       const access_token = localStorage.getItem("access_token")
+      console.log("BACKEND_URL")
+      console.log(backend_url)
       const res = await fetch(backend_url, {
         headers: {
           Authorization: `Bearer ${access_token}`
         }, 
         method: "GET"
       });
+      console.log("BACKEND_URL")
+      console.log(backend_url)
       let resJson = await res.json();
       if (res.status === 200) {
         setMessages(resJson)
