@@ -1,0 +1,6 @@
+#! /usr/bin/bash
+
+docker run --rm \
+ --env-file $ENVFILE_PATH \
+ -p 4567:4567 \
+ -it busybox

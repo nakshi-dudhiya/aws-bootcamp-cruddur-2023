@@ -10,6 +10,7 @@ echo $ENVFILE_PATH
 
 docker run --rm \
  --env-file $ENVFILE_PATH \
- -p 4567:4567 \
+ --network cruddur-net \
+ --publish 4567:4567 \
  -it backend-flask-prod 
 
