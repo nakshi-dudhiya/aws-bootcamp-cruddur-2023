@@ -6,5 +6,5 @@ DATA_FILE_PATH="$SERVERLESS_PATH/files/tomjerry.jpg"
 
 echo $DATA_FILE_PATH
 aws s3 rm "s3://assets.$DOMAIN_NAME/avatars/original/tomjerry.jpg"
-aws s3 rm "s3://assets.$DOMAIN_NAME/avatars/original/tomjerry.png"
+aws s3 rm "s3://assets.$DOMAIN_NAME/avatars/original/tomjerry.jpg"
 
