@@ -7,9 +7,10 @@ import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import * as iam from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
 import * as process from 'process';
+import * as dotenv from 'dotenv';
 
 //import will not work for dotenv you have to use require.
-const dotenv = require('dotenv');
+//const dotenv = require('dotenv');
 dotenv.config();
 
 export class ThumbingServerlessCdkStack extends cdk.Stack {
@@ -29,25 +30,32 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
     console.log('topicName',topicName)
     console.log('functionPath',functionPath)
 
-    const bucket = this.createBucket(bucketName)
+    //const bucket = this.createBucket(bucketName)
+    const bucket= this.importBucket(bucketName);
+
+    //Create a Lambda
     const lambda = this.createLambda(folderInput,folderOutput,functionPath,bucketName)
 
     // This could be redundent since we have s3ReadWritePolicy?
-    bucket.grantRead(lambda);
-    bucket.grantPut(lambda);
+    //bucket.grantRead(lambda);
+    //bucket.grantPut(lambda);
 
+    //Create topic and subscription
     const snsTopic = this.createSnsTopic(topicName)
     this.createSnsSubscription(snsTopic,webhookUrl)
 
-    // S3 Event Notifications
-    this.createS3NotifyToSns(folderOutput,snsTopic,bucket)
+    // add our s3 event notifications
     this.createS3NotifyToLambda(folderInput,lambda,bucket)
+    this.createS3NotifyToSns(folderOutput,snsTopic,bucket)
 
+    // create policies
     const s3ReadWritePolicy = this.createPolicyBucketAccess(bucket.bucketArn)
-    const snsPublishPolicy = this.createPolicySnSPublish(snsTopic.topicArn)
+    //const snsPublishPolicy = this.createPolicySnSPublish(snsTopic.topicArn)
 
+    //attach policies for permissions
     lambda.addToRolePolicy(s3ReadWritePolicy);
-    lambda.addToRolePolicy(snsPublishPolicy);
+    //lambda.addToRolePolicy(snsPublishPolicy);
+
   }
 
   createBucket(bucketName: string): s3.IBucket {
@@ -56,6 +64,11 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
       bucketName: bucketName,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
+    return bucket;
+  }
+
+  importBucket(bucketName: string): s3.IBucket{
+    const bucket = s3.Bucket.fromBucketName(this,"AssetsBucket",bucketName);
     return bucket;
   }
 
@@ -96,7 +109,7 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
   }
 
   createSnsTopic(topicName: string): sns.ITopic{
-    const logicalName = "Topic";
+    const logicalName = "ThumbingTopic";
     const snsTopic = new sns.Topic(this, logicalName, {
       topicName: topicName
     });
@@ -122,7 +135,7 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
     });
     return s3ReadWritePolicy;
   }
-
+/*
   createPolicySnSPublish(topicArn: string){
     const snsPublishPolicy = new iam.PolicyStatement({
       actions: [
@@ -134,4 +147,5 @@ export class ThumbingServerlessCdkStack extends cdk.Stack {
     });
     return snsPublishPolicy;
   }
+*/
 }
