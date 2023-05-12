@@ -5,6 +5,6 @@ SERVERLESS_PATH=$(dirname $ABS_PATH)
 DATA_FILE_PATH="$SERVERLESS_PATH/files/tomjerry.jpg"
 
 echo $DATA_FILE_PATH
-aws s3 rm "s3://assets.$DOMAIN_NAME/avatars/original/tomjerry.jpg"
-aws s3 rm "s3://assets.$DOMAIN_NAME/avatars/original/tomjerry.jpg"
+aws s3 rm "s3://avatars.$DOMAIN_NAME/tomjerry.jpg"
+aws s3 rm "s3://assets.$DOMAIN_NAME/avatars/tomjerry.jpg"
 
