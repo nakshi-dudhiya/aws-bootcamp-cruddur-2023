@@ -10,9 +10,6 @@ import {checkAuth, getAccessToken} from '../lib/CheckAuth';
 
 
 
-// [TODO] Authenication
-//import Cookies from 'js-cookie'
-
 export default function HomeFeedPage() {
   const [activities, setActivities] = React.useState([]);
   const [popped, setPopped] = React.useState(false);
@@ -68,13 +65,18 @@ export default function HomeFeedPage() {
           setActivities={setActivities} 
           activities={activities} 
         />
-        <ActivityFeed 
-          title="Home" 
-          setReplyActivity={setReplyActivity} 
-          setPopped={setPoppedReply} 
-          activities={activities} 
-        />
-      </div>
+        <div className='activity_feed'>
+          <div className='activity_feed_heading'>
+            <div className='title'>Home</div>
+          </div>
+          <ActivityFeed 
+            title="Home" 
+            setReplyActivity={setReplyActivity} 
+            setPopped={setPoppedReply} 
+            activities={activities} 
+          />
+          </div>
+        </div>
       <DesktopSidebar user={user} />
     </article>
   );

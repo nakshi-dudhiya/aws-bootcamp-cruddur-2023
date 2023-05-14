@@ -1,0 +1,47 @@
+.profile_heading{
+    padding-bottom: 0.5px;
+}
+
+.profile_heading .avatar {
+    position: absolute;
+    bottom: -70px;
+    left: 15px;
+}
+
+.profile_heading .avatar img {
+    width: 125px;
+    height: 125px;
+    border-radius: 999px;
+    border: solid 8px var(--fg);
+}
+
+.profile_heading .banner{
+    height: 200px;
+    position: relative;
+}
+
+.profile_heading .info {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding: 10px;
+}
+
+.profile_heading .info .id{
+    padding-top: 70px;
+    flex-grow: 1;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.profile_heading .info .id .display_name {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.profile_heading .info .id .handle {
+    font-size: 14px;
+}
+
+.profile_heading .cruds_count{
+    color: rgba(255, 255, 255, 0.7);
+}
