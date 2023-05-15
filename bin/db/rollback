@@ -24,6 +24,7 @@ def set_last_successful_run(value):
   sql = """
   UPDATE schema_information
   SET last_successful_run = %(last_successful_run)s
+  WHERE id = 1
   """
   db.query_commit(sql,{'last_successful_run': value})
   return value
@@ -43,6 +44,9 @@ for migration_file in migration_files:
     match = re.match(r'^\d+', filename)
     if match:
       file_time = int(match.group())
+      file_time = round(file_time, 16)
+      #file_time = int(match.group())
+      print(file_time)
       print("==<><>")
       print(last_successful_run, file_time)
       print(last_successful_run > file_time)
@@ -52,3 +56,4 @@ for migration_file in migration_files:
         print('=== rolling back: ',module_name)
         mod.migration.rollback()
         set_last_successful_run(file_time)
+

@@ -4,7 +4,7 @@ DROP TABLE IF EXISTS public.users;
 DROP TABLE IF EXISTS public.activities;
 
 CREATE TABLE IF NOT EXISTS public.schema_information (
-  id integer
+  id integer UNIQUE,
   last_successful_run text
 );
 
