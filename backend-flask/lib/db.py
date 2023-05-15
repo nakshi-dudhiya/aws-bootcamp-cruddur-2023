@@ -40,16 +40,18 @@ class Db:
     for key,value in params.items():
       print(key, ":", value)
 
-  def query_value(self,sql,params={}):
-    self.print_sql('value',sql,params)
+  def query_value(self,sql,params={},verbose=True):
+    if verbose:
+      self.print_sql('value',sql,params)
     with self.pool.connection() as conn:
       with conn.cursor() as cur:
         cur.execute(sql,params)
         json = cur.fetchone()
         return json[0]
 
-  def query_commit(self, sql, params):
-    self.print_sql('COMMIT with ID',sql,params)
+  def query_commit(self,sql,params={},verbose=True):
+    if verbose:
+      self.print_sql('commit with returning',sql,params)
     pattern = r"\bRETURNING\b"
     is_returning_id = re.search(pattern, sql)
     try:
@@ -66,8 +68,9 @@ class Db:
 
   
   # when we want to return an array of json object
-  def query_array_json(self,sql,params={}):
-    self.print_sql('ARRAY',sql, params)
+  def query_array_json(self,sql,params={},verbose=True):
+    if verbose:
+      self.print_sql('array',sql,params)
     wrapped_sql = self.query_wrap_array(sql)
     with self.pool.connection() as conn:
       with conn.cursor() as cur:
@@ -76,10 +79,11 @@ class Db:
         return json[0]
 
   # When we want to return an object of json objects
-  def query_object_json(self,sql,params={}):
-    self.print_sql('OBJECT-JSON',sql, params)
+  def query_object_json(self,sql,params={},verbose=True):
+    if verbose:
+      self.print_sql('json',sql,params)
+      self.print_params(params)
     wrapped_sql = self.query_wrap_object(sql)
-    self.print_params(params)
     with self.pool.connection() as conn:
       with conn.cursor() as cur:
         cur.execute(wrapped_sql, params)
