@@ -4,30 +4,34 @@ import process from 'process';
 import {getAccessToken} from 'lib/CheckAuth';
 
 export default function ProfileForm(props) {
-  const [presignedurl, setPresignedurl] = React.useState(0);
-  const [bio, setBio] = React.useState(0);
-  const [displayName, setDisplayName] = React.useState(0);
+  const [presignedurl, setPresignedurl] = React.useState('');
+  const [bio, setBio] = React.useState('');
+  const [displayName, setDisplayName] = React.useState( '');
 
   React.useEffect(()=>{
-    console.log('useEffects',props)
-    setBio(props.profile.bio);
+    setBio(props.profile.bio || '');
     setDisplayName(props.profile.display_name);
   }, [props.profile])
 
-  const s3uploadkey = async (event) => {
+  const s3uploadkey = async (extension) => {
+    console.log('EXT', extension);
     try {
       console.log('s3uploadKey')
-      const backend_url = ""
+      const backend_url = `${process.env.REACT_APP_API_GATEWAY_ENDPOINT_URL}/avatars/key_upload`
       await getAccessToken()
       const access_token = localStorage.getItem("access_token")
+      const json= {
+        extension: extension
+      }
       const res = await fetch(backend_url, {
         method: "POST",
         headers: {
-          'Origin': '',
+          'Origin': process.env.REACT_APP_FRONTEND_URL,
           'Authorization': `Bearer ${access_token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify(json),
       });
       let data = await res.json();
       if (res.status === 200) {
@@ -50,7 +54,10 @@ export default function ProfileForm(props) {
     const preview_image_url = URL.createObjectURL(file)
     console.log('file', file, filename, size, type)
 
-    const presignedurl = await s3uploadkey()
+    const fileparts = filename.split('.')
+    const extension = fileparts[fileparts.length-1]
+
+    const presignedurl = await s3uploadkey(extension)
     console.log('pp',presignedurl)
 
     try {
@@ -62,10 +69,9 @@ export default function ProfileForm(props) {
           'Content-Type': type
         }
       });
-      let data = await res.json();
+      
       if (res.status === 200) {
-        console.log('presigned url', data)
-        setPresignedurl(data.url)
+        
       } else {
         console.log(res)
       }
@@ -126,8 +132,8 @@ export default function ProfileForm(props) {
           className='profile_form popup_form'
           onSubmit={onsubmit}
         >
-          <div class="popup_heading">
-            <div class="popup_title">Edit Profile</div>
+          <div className="popup_heading">
+            <div className="popup_title">Edit Profile</div>
             <div className='submit'>
               <button type='submit'>Save</button>
             </div>

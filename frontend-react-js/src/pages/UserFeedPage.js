@@ -21,7 +21,6 @@ export default function UserFeedPage() {
   const dataFetchedRef = React.useRef(false);
 
   const params = useParams();
-  //const title = `@${params.handle}`;
 
   const loadData = async () => {
     try {
