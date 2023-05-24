@@ -4,6 +4,7 @@ import process from 'process';
 import {getAccessToken} from 'lib/CheckAuth';
 
 export default function ProfileForm(props) {
+  const [presignedurl, setPresignedurl] = React.useState(0);
   const [bio, setBio] = React.useState(0);
   const [displayName, setDisplayName] = React.useState(0);
 
@@ -15,13 +16,14 @@ export default function ProfileForm(props) {
 
   const s3uploadkey = async (event) => {
     try {
-      console.log('s3upload')
+      console.log('s3uploadKey')
       const backend_url = ""
       await getAccessToken()
       const access_token = localStorage.getItem("access_token")
       const res = await fetch(backend_url, {
         method: "POST",
         headers: {
+          'Origin': '',
           'Authorization': `Bearer ${access_token}`,
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -30,6 +32,7 @@ export default function ProfileForm(props) {
       let data = await res.json();
       if (res.status === 200) {
         console.log('presigned url', data)
+        return data.url
       } else {
         console.log(res)
       }
@@ -47,10 +50,12 @@ export default function ProfileForm(props) {
     const preview_image_url = URL.createObjectURL(file)
     console.log('file', file, filename, size, type)
 
+    const presignedurl = await s3uploadkey()
+    console.log('pp',presignedurl)
+
     try {
       console.log('s3upload')
-      const backend_url = ""
-      const res = await fetch(backend_url, {
+      const res = await fetch(presignedurl, {
         method: "PUT",
         body: file,
         headers: {
@@ -60,6 +65,7 @@ export default function ProfileForm(props) {
       let data = await res.json();
       if (res.status === 200) {
         console.log('presigned url', data)
+        setPresignedurl(data.url)
       } else {
         console.log(res)
       }
@@ -131,9 +137,6 @@ export default function ProfileForm(props) {
               Upload Avatar
             </div>
             <input type="file" className='avatarUpload' onChange={s3upload}/>
-            <div className="upload" onClick={s3upload}>
-              Upload Avatar For Real
-            </div>
             <div className="field display_name">
               <label>Display Name</label>
               <input

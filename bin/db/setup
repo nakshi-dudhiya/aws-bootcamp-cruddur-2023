@@ -14,4 +14,6 @@ source "$DB_PATH/create"
 source "$DB_PATH/schema-load"
 source "$DB_PATH/seed"
 python3 "$DB_PATH/update-cognito-user-ids"
+python3 "$DB_PATH/migrate"
+
 #source "$bin_path/db/update-cognito-user-ids"
