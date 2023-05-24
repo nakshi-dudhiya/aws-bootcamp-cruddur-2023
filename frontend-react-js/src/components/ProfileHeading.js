@@ -1,6 +1,6 @@
 import './ProfileHeading.css';
 import EditProfileButton from '../components/EditProfileButton';
-
+import ProfileAvatar from './ProfileAvatar';
 
 export default function ProfileHeading(props) {
   const backgroundImage = 'url("https://assets.ncodes.ca/banners/background.jpg")';
@@ -15,9 +15,7 @@ export default function ProfileHeading(props) {
       <div className='title'>{props.profile.display_name}</div>
       <div className="cruds_count">{props.profile.cruds_count} Cruds</div>
       <div className='banner' style={styles}>
-        <div className='avatar'>
-            <img src="https://assets.ncodes.ca/avatars/tomjerry.jpg"/>
-        </div>
+        <ProfileAvatar id={props.profile.cognito_user_uuid}/>
       </div> 
       <div className='info'>
         <div className='id'>

@@ -2,18 +2,16 @@
     padding-bottom: 0.5px;
 }
 
-.profile_heading .avatar {
+.profile_heading .profile-avatar {
     position: absolute;
     bottom: -70px;
     left: 15px;
-}
-
-.profile_heading .avatar img {
     width: 125px;
     height: 125px;
     border-radius: 999px;
     border: solid 8px var(--fg);
 }
+    
 
 .profile_heading .banner{
     height: 200px;
