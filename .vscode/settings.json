@@ -1,0 +1,9 @@
+{
+    "yaml.customTags": [
+        "!Ref"
+    ],
+    "yaml.schemaStore.enable": true,
+    "yaml.schemas": {
+
+    }
+}
